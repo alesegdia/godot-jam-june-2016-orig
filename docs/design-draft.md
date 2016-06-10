@@ -26,7 +26,10 @@ _Secondary bonus Theme: Two-color_
 
 ##### Other ideas (to be discussed)
 - Track may have multiple lanes
-- Track could be solid curves instead of blocks
+- ~~Track could be solid curves instead of blocks~~
 - Vector art aesthetic
 - Time limit (60s, 30s, 2m)
 - Score based on distance travelled
+- Change camera FOV with speed (more speed = more FOV with a limit)
+- Mountains? Just for aesthetics. If so, we could make them with a heightmap, and even modify their height with speed.
+
