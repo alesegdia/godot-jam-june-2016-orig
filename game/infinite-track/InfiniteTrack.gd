@@ -22,14 +22,20 @@ func renderTrack( delta ):
 	ig.begin(VisualServer.PRIMITIVE_LINES, ig.get_material_override())
 	ig.set_uv(Vector2(0, 0))
 	ig.set_color(line_color)
+	
+	for x in range(width + 1):
+		var xx = x * quad_extent - width / 2 * quad_extent
+		ig.add_vertex( Vector3( xx, 0, 0 ) )
+		ig.add_vertex( Vector3( xx, 0, timer ) )
+	
 	for x in range(width):
 		for y in range(height):
 			var xx = x * quad_extent
 			var yy = y * quad_extent + timer
-			var v00 = Vector3( xx - width * quad_extent/2, 0, yy )
-			var v10 = Vector3( xx + quad_extent - width * quad_extent /2, 0, yy )
-			var v01 = Vector3( xx - width * quad_extent /2, 0, yy + quad_extent )
-			var v11 = Vector3( xx + quad_extent - width * quad_extent/2, 0, yy + quad_extent )
+			var v00 = Vector3( xx - width * quad_extent / 2, 0, yy )
+			var v01 = Vector3( xx - width * quad_extent / 2, 0, yy + quad_extent )
+			var v10 = Vector3( xx + quad_extent - width * quad_extent / 2, 0, yy )
+			var v11 = Vector3( xx + quad_extent - width * quad_extent / 2, 0, yy + quad_extent )
 			ig.add_vertex(v00)
 			ig.add_vertex(v10)
 			
@@ -41,9 +47,10 @@ func renderTrack( delta ):
 			
 			ig.add_vertex(v01)
 			ig.add_vertex(v11)
+
 	ig.set_color( horizon_color )
-	ig.add_vertex( Vector3( -10, 0, 1 ) )
-	ig.add_vertex( Vector3( 10, 0, 1 ) )
+	ig.add_vertex( Vector3( -10, 0, 0 ) )
+	ig.add_vertex( Vector3( 10, 0, 0 ) )
 	ig.end()
 	pass
 
@@ -51,5 +58,9 @@ func _process( delta ):
 	timer += delta
 	if timer > quad_extent:
 		timer = 0
+		row_down()
 	renderTrack( delta )
+	pass
+
+func row_down():
 	pass
