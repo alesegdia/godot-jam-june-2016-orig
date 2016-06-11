@@ -14,9 +14,11 @@ var y_offset = 0
 
 var Map2D = load("Map2D.gd")
 var map = Map2D.new( width, height )
+var next_row
 
 func _ready():
 	ig = get_node("ImmediateGeometry")
+	gen_next_row()
 	set_process(true)
 	pass
 
@@ -25,10 +27,15 @@ func renderQuads( delta, num, color ):
 	ig.set_uv(Vector2(0, 0))
 	ig.set_color(color)
 	
-	for x in range(width + 1):
-		var xx = x * quad_extent - width / 2 * quad_extent
-		ig.add_vertex( Vector3( xx, 0, 0 ) )
-		ig.add_vertex( Vector3( xx, 0, timer ) )
+	for x in range(width):
+		var cell_value = next_row[x]
+		if cell_value == num:
+			var xx = x * quad_extent - width / 2 * quad_extent
+			ig.add_vertex( Vector3( xx, 0, 0 ) )
+			ig.add_vertex( Vector3( xx, 0, timer ) )
+			ig.add_vertex( Vector3( xx + quad_extent, 0, 0 ) )
+			ig.add_vertex( Vector3( xx + quad_extent, 0, timer ) )
+
 	
 	for x in range(width):
 		for y in range(height):
@@ -70,13 +77,18 @@ func _process( delta ):
 	renderQuads( delta, 1, horizon_color )
 	pass
 
-func row_down():
-	map.drop_last_row()
-	var row = Array()
+func gen_next_row():
+	next_row = Array()
 	for i in range(width):
 		var rnd = randf()
 		if rnd > 0.5:
-			row.push_back(1)
+			next_row.push_back(1)
 		else:
-			row.push_back(0)
-	map.push_row( row )
+			next_row.push_back(0)
+	
+func row_down():
+	map.drop_last_row()
+	map.push_row( next_row )
+	gen_next_row()
+
+	
