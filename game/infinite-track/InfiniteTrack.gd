@@ -20,11 +20,10 @@ func _ready():
 	set_process(true)
 	pass
 
-func renderTrack( delta ):
-	ig.clear()
+func renderQuads( delta, num, color ):
 	ig.begin(VisualServer.PRIMITIVE_LINES, ig.get_material_override())
 	ig.set_uv(Vector2(0, 0))
-	ig.set_color(line_color)
+	ig.set_color(color)
 	
 	for x in range(width + 1):
 		var xx = x * quad_extent - width / 2 * quad_extent
@@ -34,27 +33,26 @@ func renderTrack( delta ):
 	for x in range(width):
 		for y in range(height):
 			var cell_value = map.get( x, y )
-			if cell_value == 0:
-				ig.set_color(line_color)
-			else:
-				ig.set_color(horizon_color)
-			var xx = x * quad_extent
-			var yy = y * quad_extent + timer
-			var v00 = Vector3( xx - width * quad_extent / 2, 0, yy )
-			var v01 = Vector3( xx - width * quad_extent / 2, 0, yy + quad_extent )
-			var v10 = Vector3( xx + quad_extent - width * quad_extent / 2, 0, yy )
-			var v11 = Vector3( xx + quad_extent - width * quad_extent / 2, 0, yy + quad_extent )
-			ig.add_vertex(v00)
-			ig.add_vertex(v10)
-			
-			ig.add_vertex(v10)
-			ig.add_vertex(v11)
-			
-			ig.add_vertex(v00)
-			ig.add_vertex(v01)
-			
-			ig.add_vertex(v01)
-			ig.add_vertex(v11)
+			if cell_value == num:
+				var xx = x * quad_extent
+				var yy = y * quad_extent + timer
+				var left = xx - width * quad_extent / 2
+				var right = xx + quad_extent - width * quad_extent / 2
+				var v00 = Vector3( left, 0, yy )
+				var v01 = Vector3( left, 0, yy + quad_extent )
+				var v10 = Vector3( right, 0, yy )
+				var v11 = Vector3( right, 0, yy + quad_extent )
+				ig.add_vertex(v00)
+				ig.add_vertex(v10)
+				
+				ig.add_vertex(v10)
+				ig.add_vertex(v11)
+				
+				ig.add_vertex(v00)
+				ig.add_vertex(v01)
+				
+				ig.add_vertex(v01)
+				ig.add_vertex(v11)
 
 	ig.set_color( horizon_color )
 	ig.add_vertex( Vector3( -10, 0, 0 ) )
@@ -67,7 +65,9 @@ func _process( delta ):
 	if timer > quad_extent:
 		timer = 0
 		row_down()
-	renderTrack( delta )
+	ig.clear()
+	renderQuads( delta, 0, line_color )
+	renderQuads( delta, 1, horizon_color )
 	pass
 
 func row_down():
