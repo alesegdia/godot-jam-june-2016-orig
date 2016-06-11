@@ -6,6 +6,7 @@ export var width = 10
 export var quad_extent = 0.5
 
 export var line_color = Color( 0.675, 0.169, 0.392 )
+export var horizon_color = Color( 0.675, 0.169, 0.392 )
 
 var ig
 var timer = 0
@@ -40,6 +41,9 @@ func renderTrack( delta ):
 			
 			ig.add_vertex(v01)
 			ig.add_vertex(v11)
+	ig.set_color( horizon_color )
+	ig.add_vertex( Vector3( -10, 0, 1 ) )
+	ig.add_vertex( Vector3( 10, 0, 1 ) )
 	ig.end()
 	pass
 
