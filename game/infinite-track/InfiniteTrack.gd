@@ -12,6 +12,9 @@ var ig
 var timer = 0
 var y_offset = 0
 
+var Map2D = load("Map2D.gd")
+var map = Map2D.new( width, height )
+
 func _ready():
 	ig = get_node("ImmediateGeometry")
 	set_process(true)
@@ -30,6 +33,11 @@ func renderTrack( delta ):
 	
 	for x in range(width):
 		for y in range(height):
+			var cell_value = map.get( x, y )
+			if cell_value == 0:
+				ig.set_color(line_color)
+			else:
+				ig.set_color(horizon_color)
 			var xx = x * quad_extent
 			var yy = y * quad_extent + timer
 			var v00 = Vector3( xx - width * quad_extent / 2, 0, yy )
@@ -63,4 +71,12 @@ func _process( delta ):
 	pass
 
 func row_down():
-	pass
+	map.drop_last_row()
+	var row = Array()
+	for i in range(width):
+		var rnd = randf()
+		if rnd > 0.5:
+			row.push_back(1)
+		else:
+			row.push_back(0)
+	map.push_row( row )
