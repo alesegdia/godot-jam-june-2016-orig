@@ -1,9 +1,7 @@
 
 extends Spatial
 
-# member variables here, example:
-# var a=2
-# var b="textvar"
+export var rear_speed = 0.03
 
 func _ready():
 	set_process_input(true)
@@ -17,6 +15,6 @@ func _process(delta):
 	elif Input.is_action_pressed("ui_right"):
 		dir = 1
 	var xform = get_transform()
-	xform.origin.x += dir * 0.03
+	xform.origin.x += dir * rear_speed
 	set_transform( xform )
 	pass
