@@ -10,13 +10,13 @@ _Secondary bonus Theme: Two-color_
 - Horizontal or vertical scrolling
 
 ## Jam tie-ins
-##### Procedural
+### Procedural
 - Track is generated on-the-fly using patterns
 - Patterns are tile-based maps
 	- ![tile map for track](images/sample-track.png)
 - Item pickups will be generated as needed to match pattern but not tied to each pattern
 
-##### Two-color
+### Two-color
 - Track has two colors
 - Vehicle has three color states: Color A, Color B and A/B
 	- When on same color, vehicle accelerates
@@ -24,10 +24,7 @@ _Secondary bonus Theme: Two-color_
 	- When vehicle is A/B, no change in acceleration
 		- Diagram (in [Programmer art](https://en.wikipedia.org/wiki/Programmer_art))![idea for track in two colors](images/jam-idea-map.png)
 
-##### Other ideas (to be discussed)
-- Track may have multiple lanes
-- ~~Track could be solid curves instead of blocks~~
-- Vector art aesthetic
+## Other ideas (to be discussed)
 - Time limit (60s, 30s, 2m)
 - Score based on distance travelled
 - Change camera FOV with speed (more speed = more FOV with a limit)
