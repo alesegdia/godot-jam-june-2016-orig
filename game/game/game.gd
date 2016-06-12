@@ -11,8 +11,8 @@ func _ready():
 var prev_fov = 0
 
 func _process(delta):
-	var new_fov = 60
+	var new_fov = 60 * log(infiniteTrack.base_speed) / 1.5
 	if new_fov != prev_fov:
-		# cam.set_perspective( new_fov, cam.get_zfar(), cam.get_znear() )
+		cam.set_perspective( new_fov, cam.get_znear(), cam.get_zfar() )
 		prev_fov = new_fov
 	pass

@@ -70,8 +70,8 @@ func renderQuads( delta, num, color ):
 				ig.add_vertex(v11)
 
 	ig.set_color( horizon_color )
-	ig.add_vertex( Vector3( -10, 0, 0 ) )
-	ig.add_vertex( Vector3( 10, 0, 0 ) )
+	ig.add_vertex( Vector3( -1000, 0, 0 ) )
+	ig.add_vertex( Vector3( 1000, 0, 0 ) )
 	ig.end()
 	pass
 
@@ -80,8 +80,6 @@ func _process( delta ):
 	while timer * base_speed > quad_extent:
 		timer -= quad_extent / base_speed
 		row_down()
-		print("meh")
-		
 	ig.clear()
 	renderQuads( delta, 0, line_color )
 	renderQuads( delta, 1, horizon_color )
