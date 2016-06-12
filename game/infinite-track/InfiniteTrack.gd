@@ -8,6 +8,9 @@ export var quad_extent = 0.5
 export var line_color = Color( 0.675, 0.169, 0.392 )
 export var horizon_color = Color( 0.675, 0.169, 0.392 )
 
+export var increase_speed_rate = 0.1
+export var decrease_speed_rate = 0.1
+
 var ig
 var timer = 0
 var y_offset = 0
@@ -16,6 +19,8 @@ var Map2D = load("Map2D.gd")
 var map = Map2D.new( width, height )
 var next_row
 var row_generator
+
+export var speed_range = Vector2( 4.255, 10000 )
 
 export var base_speed = 1.0
 
@@ -83,7 +88,20 @@ func getTile( x, z ):
 		tx = -1
 	if tz < 0 || tz >= width:
 		tz = -1
-	return Vector2( floor(tx), floor(tz) )
+	var tile = Vector2( floor(tx), floor(tz) )
+	return map.get( tile.x, tile.y )
+
+func increaseAccel():
+	setSpeed( base_speed + increase_speed_rate )
+	pass
+
+func decreaseAccel():
+	setSpeed( base_speed - decrease_speed_rate )
+	pass
+
+func setSpeed( new_speed ):
+	base_speed = new_speed
+	base_speed = clamp( base_speed, speed_range.x, speed_range.y )
 
 func _process( delta ):
 	timer += delta

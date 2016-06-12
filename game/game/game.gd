@@ -28,7 +28,10 @@ func detectPlayerTile():
 	var px = player.get_transform().origin.x
 	var pz = player.get_transform().origin.z
 	var tile = infiniteTrack.getTile( px, pz )
-	print(tile)
+	if tile == 0:
+		infiniteTrack.decreaseAccel()
+	elif tile == 1:
+		infiniteTrack.increaseAccel()
 	pass
 
 func _process(delta):
