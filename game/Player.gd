@@ -3,9 +3,12 @@ extends Spatial
 
 export var rear_speed = 0.03
 
+var base_z
+
 func _ready():
 	set_process_input(true)
 	set_process(true)
+	base_z = get_transform().origin.z
 	pass
 
 func _process(delta):
