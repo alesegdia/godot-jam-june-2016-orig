@@ -17,15 +17,19 @@ var map = Map2D.new( width, height )
 var next_row
 var row_generator
 
+export var base_speed = 1.0
+
 func _ready():
 	row_generator = load("RandomTrackGenerator.gd").new( width )
 	ig = get_node("ImmediateGeometry")
+	gen_row()
+	set_process(true)
+	set_process_input(true)
+	pass
+
+func gen_row():
 	row_generator.gen_next_row()
 	next_row = row_generator.next_row
-	#gen_next_row_random()
-	#gen_next_row_line()
-	set_process(true)
-	pass
 
 func renderQuads( delta, num, color ):
 	ig.begin(VisualServer.PRIMITIVE_LINES, ig.get_material_override())
@@ -37,16 +41,16 @@ func renderQuads( delta, num, color ):
 		if cell_value == num:
 			var xx = x * quad_extent - width / 2 * quad_extent
 			ig.add_vertex( Vector3( xx, 0, 0 ) )
-			ig.add_vertex( Vector3( xx, 0, timer ) )
+			ig.add_vertex( Vector3( xx, 0, timer * base_speed ) )
 			ig.add_vertex( Vector3( xx + quad_extent, 0, 0 ) )
-			ig.add_vertex( Vector3( xx + quad_extent, 0, timer ) )
+			ig.add_vertex( Vector3( xx + quad_extent, 0, timer * base_speed ) )
 	
 	for x in range(width):
 		for y in range(height):
 			var cell_value = map.get( x, y )
 			if cell_value == num:
 				var xx = x * quad_extent
-				var yy = y * quad_extent + timer
+				var yy = y * quad_extent + timer * base_speed
 				var left = xx - width * quad_extent / 2
 				var right = xx + quad_extent - width * quad_extent / 2
 				var v00 = Vector3( left, 0, yy )
@@ -73,20 +77,20 @@ func renderQuads( delta, num, color ):
 
 func _process( delta ):
 	timer += delta
-	if timer > quad_extent:
+	if timer * base_speed > quad_extent:
 		timer = 0
 		row_down()
 	ig.clear()
 	renderQuads( delta, 0, line_color )
 	renderQuads( delta, 1, horizon_color )
+	
+	if Input.is_action_pressed("ui_up"):
+		base_speed += 0.1
+	elif Input.is_action_pressed("ui_down"):
+		base_speed -= 0.1
 	pass
-
-var line_slope = 2
-var line_x = 0
 
 func row_down():
 	map.drop_last_row()
 	map.push_row( next_row )
-	#gen_next_row_random()
-	row_generator.gen_next_row()
-	next_row = row_generator.next_row
+	gen_row()
