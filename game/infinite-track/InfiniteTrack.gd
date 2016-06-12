@@ -20,7 +20,7 @@ var row_generator
 export var base_speed = 1.0
 
 func _ready():
-	row_generator = load("RandomTrackGenerator.gd").new( width )
+	row_generator = load("/infinite-track/RandomTrackGenerator.gd").new( width )
 	ig = get_node("ImmediateGeometry")
 	gen_row()
 	set_process(true)
@@ -77,9 +77,11 @@ func renderQuads( delta, num, color ):
 
 func _process( delta ):
 	timer += delta
-	if timer * base_speed > quad_extent:
-		timer = 0
+	while timer * base_speed > quad_extent:
+		timer -= quad_extent / base_speed
 		row_down()
+		print("meh")
+		
 	ig.clear()
 	renderQuads( delta, 0, line_color )
 	renderQuads( delta, 1, horizon_color )
