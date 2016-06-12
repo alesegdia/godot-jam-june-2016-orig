@@ -11,13 +11,27 @@ func _ready():
 
 var prev_fov = 0
 
-func _process(delta):
+func handleFov():
 	var new_fov = 60 * log(infiniteTrack.base_speed) / 1.5
 	if new_fov != prev_fov:
+		
+		# set new fov
 		cam.set_perspective( new_fov, cam.get_znear(), cam.get_zfar() )
 		prev_fov = new_fov
 		
+		# retreat player to avoid going too far
 		var xform = player.get_transform()
 		xform.origin.z = player.base_z + log(infiniteTrack.base_speed) / 2.4
 		player.set_transform(xform)
+
+func detectPlayerTile():
+	var px = player.get_transform().origin.x
+	var pz = player.get_transform().origin.z
+	var tile = infiniteTrack.getTile( px, pz )
+	print(tile)
+	pass
+
+func _process(delta):
+	handleFov()
+	detectPlayerTile()
 	pass

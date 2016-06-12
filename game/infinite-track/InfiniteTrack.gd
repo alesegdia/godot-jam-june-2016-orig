@@ -75,6 +75,16 @@ func renderQuads( delta, num, color ):
 	ig.end()
 	pass
 
+func getTile( x, z ):
+	x += quad_extent * width / 2
+	var tx = x / quad_extent
+	var tz = z / quad_extent
+	if tx < 0 || tx >= width:
+		tx = -1
+	if tz < 0 || tz >= width:
+		tz = -1
+	return Vector2( floor(tx), floor(tz) )
+
 func _process( delta ):
 	timer += delta
 	while timer * base_speed > quad_extent:
