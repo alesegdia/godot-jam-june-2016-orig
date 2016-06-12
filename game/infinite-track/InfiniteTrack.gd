@@ -15,10 +15,15 @@ var y_offset = 0
 var Map2D = load("Map2D.gd")
 var map = Map2D.new( width, height )
 var next_row
+var row_generator
 
 func _ready():
+	row_generator = load("RandomTrackGenerator.gd").new( width )
 	ig = get_node("ImmediateGeometry")
-	gen_next_row()
+	row_generator.gen_next_row()
+	next_row = row_generator.next_row
+	#gen_next_row_random()
+	#gen_next_row_line()
 	set_process(true)
 	pass
 
@@ -35,7 +40,6 @@ func renderQuads( delta, num, color ):
 			ig.add_vertex( Vector3( xx, 0, timer ) )
 			ig.add_vertex( Vector3( xx + quad_extent, 0, 0 ) )
 			ig.add_vertex( Vector3( xx + quad_extent, 0, timer ) )
-
 	
 	for x in range(width):
 		for y in range(height):
@@ -77,18 +81,12 @@ func _process( delta ):
 	renderQuads( delta, 1, horizon_color )
 	pass
 
-func gen_next_row():
-	next_row = Array()
-	for i in range(width):
-		var rnd = randf()
-		if rnd > 0.5:
-			next_row.push_back(1)
-		else:
-			next_row.push_back(0)
-	
+var line_slope = 2
+var line_x = 0
+
 func row_down():
 	map.drop_last_row()
 	map.push_row( next_row )
-	gen_next_row()
-
-	
+	#gen_next_row_random()
+	row_generator.gen_next_row()
+	next_row = row_generator.next_row
