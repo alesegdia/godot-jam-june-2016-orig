@@ -19,13 +19,15 @@ var Map2D = load("Map2D.gd")
 var map = Map2D.new( width, height )
 var next_row
 var row_generator
+export var speed_range = Vector2( 4.255, 10000.0 )
+export var ship_width = 1
+export var ship_height = 1
 
-export var speed_range = Vector2( 4.255, 10000 )
 
 export var base_speed = 1.0
 
 func _ready():
-	row_generator = load("/infinite-track/RandomTrackGenerator.gd").new( width )
+	row_generator = load("res://infinite-track/RandomTrackGenerator.gd").new( width )
 	ig = get_node("ImmediateGeometry")
 	gen_row()
 	set_process(true)
@@ -107,14 +109,44 @@ func renderQuads( delta, num, color ):
 					ig.add_vertex( Vector3( right - mic, 0, down - mic ) )
 					ig.add_vertex( Vector3( right - mic, 0, down - mic * 2 ) )
 					
-					
-					pass
-
 	ig.set_color( horizon_color )
 	ig.add_vertex( Vector3( -1000, 0, 0 ) )
 	ig.add_vertex( Vector3( 1000, 0, 0 ) )
 	ig.end()
 	pass
+
+var px
+var py
+var pw
+var ph
+
+func set_player_area( x, y, w, h ):
+	px = x
+	py = y
+	pw = w
+	ph = h
+
+func draw_player_area():
+	var l = px - pw / 2
+	var r = px + pw / 2
+	var u = py - ph / 2
+	var b = py + ph / 2
+	
+
+	ig.begin(VisualServer.PRIMITIVE_LINES, ig.get_material_override())
+	ig.set_color( Color( 0.8, 0.6, 0.2 ) )
+	ig.add_vertex( Vector3( l, 0, u ) )
+	ig.add_vertex( Vector3( r, 0, u ) )
+	ig.add_vertex( Vector3( l, 0, u ) )
+	ig.add_vertex( Vector3( l, 0, b ) )
+	
+	ig.add_vertex( Vector3( r, 0, b ) )
+	ig.add_vertex( Vector3( r, 0, u ) )
+	ig.add_vertex( Vector3( r, 0, b ) )
+	ig.add_vertex( Vector3( l, 0, b ) )
+	ig.end()
+
+
 
 func getTile( x, z ):
 	x += quad_extent * width / 2
@@ -127,6 +159,28 @@ func getTile( x, z ):
 	var tile = Vector2( floor(tx), floor(tz) )
 	return map.get( tile.x, tile.y )
 
+func getTiles( cx, cy, w, h ):
+	var tiles = Array()
+	var w2 = w / 2
+	var h2 = h / 2
+	var tl = floor( ( cx - w2 ) / quad_extent )
+	var tr = floor( ( cx + w2 ) / quad_extent )
+	var tu = floor( ( cy + h2 ) / quad_extent )
+	var tb = floor( ( cy - h2 ) / quad_extent )
+	print("tl")
+	print(tl)
+	print("tr")
+	print(tr)
+	print("tu")
+	print(tu)
+	print("tb")
+	print(tb)
+	for x in range( tl, tr, 1 ):
+		for y in range( tu, tb, 1 ):
+			var tile = map.get( x + 1, y )
+			tiles.append( tile ) 
+	return tiles
+
 func increaseAccel():
 	setSpeed( base_speed + increase_speed_rate )
 	pass
@@ -138,6 +192,7 @@ func decreaseAccel():
 func setSpeed( new_speed ):
 	base_speed = new_speed
 	base_speed = clamp( base_speed, speed_range.x, speed_range.y )
+	pass
 
 func _process( delta ):
 	timer += delta
@@ -147,7 +202,7 @@ func _process( delta ):
 	ig.clear()
 	renderQuads( delta, 0, line_color )
 	renderQuads( delta, 1, horizon_color )
-	
+	draw_player_area()
 	if Input.is_action_pressed("ui_up"):
 		base_speed += 0.1
 	elif Input.is_action_pressed("ui_down"):

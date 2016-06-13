@@ -33,8 +33,13 @@ func detectPlayerTile():
 	elif tile == 1:
 		infiniteTrack.increaseAccel()
 	pass
+	var tiles = infiniteTrack.getTiles( px, pz, 1.5, 1.5 )
+	print(tiles.size())
 
 func _process(delta):
 	handleFov()
 	detectPlayerTile()
+	var px = player.get_transform().origin.x
+	var pz = player.get_transform().origin.z
+	infiniteTrack.set_player_area( px, pz, 1.0, 1.0 )
 	pass
