@@ -58,10 +58,12 @@ func renderQuads( delta, num, color ):
 				var yy = y * quad_extent + timer * base_speed
 				var left = xx - width * quad_extent / 2
 				var right = xx + quad_extent - width * quad_extent / 2
-				var v00 = Vector3( left, 0, yy )
-				var v01 = Vector3( left, 0, yy + quad_extent )
-				var v10 = Vector3( right, 0, yy )
-				var v11 = Vector3( right, 0, yy + quad_extent )
+				var up = yy
+				var down = yy + quad_extent
+				var v00 = Vector3( left, 0, up )
+				var v01 = Vector3( left, 0, down )
+				var v10 = Vector3( right, 0, up )
+				var v11 = Vector3( right, 0, down )
 				ig.add_vertex(v00)
 				ig.add_vertex(v10)
 				
@@ -73,6 +75,40 @@ func renderQuads( delta, num, color ):
 				
 				ig.add_vertex(v01)
 				ig.add_vertex(v11)
+				
+				if num == 1:
+					var mic = quad_extent / 8
+					
+					# Left upper corner
+					ig.add_vertex( Vector3( left + mic, 0, up + mic ) )
+					ig.add_vertex( Vector3( left + mic * 2, 0, up + mic ) )
+					
+					ig.add_vertex( Vector3( left + mic, 0, up + mic ) )
+					ig.add_vertex( Vector3( left + mic, 0, up + mic * 2 ) )
+					
+					# Left bottom corner
+					ig.add_vertex( Vector3( left + mic, 0, down - mic ) )
+					ig.add_vertex( Vector3( left + mic * 2, 0, down - mic ) )
+					
+					ig.add_vertex( Vector3( left + mic, 0, down - mic ) )
+					ig.add_vertex( Vector3( left + mic, 0, down - mic * 2 ) )
+					
+					# Right upper corner
+					ig.add_vertex( Vector3( right - mic, 0, up + mic ) )
+					ig.add_vertex( Vector3( right - mic * 2, 0, up + mic ) )
+					
+					ig.add_vertex( Vector3( right - mic, 0, up + mic ) )
+					ig.add_vertex( Vector3( right - mic, 0, up + mic * 2 ) )
+					
+					# Right bottom corner
+					ig.add_vertex( Vector3( right - mic, 0, down - mic ) )
+					ig.add_vertex( Vector3( right - mic * 2, 0, down - mic ) )
+					
+					ig.add_vertex( Vector3( right - mic, 0, down - mic ) )
+					ig.add_vertex( Vector3( right - mic, 0, down - mic * 2 ) )
+					
+					
+					pass
 
 	ig.set_color( horizon_color )
 	ig.add_vertex( Vector3( -1000, 0, 0 ) )
