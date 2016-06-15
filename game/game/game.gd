@@ -4,6 +4,7 @@ extends Spatial
 onready var cam = get_node("Camera")
 onready var infiniteTrack = get_node("InfiniteTrack")
 onready var player = get_node("Player")
+export var multi_tile_check = true
 
 func _ready():
 	set_process(true)
@@ -28,13 +29,20 @@ func detectPlayerTile():
 	var px = player.get_transform().origin.x
 	var pz = player.get_transform().origin.z
 	var tile = infiniteTrack.getTile( px, pz )
-	if tile == 0:
-		infiniteTrack.decreaseAccel()
-	elif tile == 1:
-		infiniteTrack.increaseAccel()
-	pass
-	var tiles = infiniteTrack.getTiles( px, pz, 0.5, 0.5 )
-	print(tiles.size())
+	
+	if multi_tile_check:
+		var tiles = infiniteTrack.getTiles( px, pz, 0.5, 0.5 )
+		for t in range(tiles.size()):
+			if tiles[t] == 1:
+				infiniteTrack.increaseAccel()
+			elif tiles[t] == 0:
+				infiniteTrack.decreaseAccel()
+	else:
+		if tile == 0:
+			infiniteTrack.decreaseAccel()
+		elif tile == 1:
+			infiniteTrack.increaseAccel()
+
 
 func _process(delta):
 	handleFov()

@@ -165,22 +165,14 @@ func getTiles( cx, cy, w, h ):
 	var tr = floor( ( cx + w2 ) / quad_extent + width / 2 )
 	var tu = floor( ( cy + h2 ) / quad_extent )
 	var tb = floor( ( cy - h2 ) / quad_extent )
-	print("tl")
-	print(tl)
-	print("tr")
-	print(tr)
-	print("tu")
-	print(tu)
-	print("tb")
-	print(tb)
-	for x in range( tl, tr, 1 ):
-		for y in range( tu, tb, 1 ):
+	for x in range( tl, tr + 1, 1 ):
+		for y in range( tb, tu + 1, 1 ):
 			var tile = map.get( x + 1, y )
-			tiles.append( tile ) 
+			tiles.append( tile )
 	return tiles
 
 func increaseAccel():
-	#setSpeed( base_speed + increase_speed_rate )
+	setSpeed( base_speed + increase_speed_rate )
 	pass
 
 func decreaseAccel():
