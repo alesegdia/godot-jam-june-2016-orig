@@ -20,8 +20,9 @@ var map = Map2D.new( width, height )
 var next_row
 var row_generator
 export var speed_range = Vector2( 4.255, 10000.0 )
-export var ship_width = 1
-export var ship_height = 1
+export var ship_width = 1.5
+export var ship_height = 1.5
+export var manual_speed = false
 
 
 export var base_speed = 1.0
@@ -120,19 +121,16 @@ var py
 var pw
 var ph
 
-func set_player_area( x, y, w, h ):
+func set_player_area( x, y ):
 	px = x
 	py = y
-	pw = w
-	ph = h
 
 func draw_player_area():
-	var l = px - pw / 2
-	var r = px + pw / 2
-	var u = py - ph / 2
-	var b = py + ph / 2
+	var l = px - ship_width / 2
+	var r = px + ship_width / 2
+	var u = py - ship_height / 2
+	var b = py + ship_height / 2
 	
-
 	ig.begin(VisualServer.PRIMITIVE_LINES, ig.get_material_override())
 	ig.set_color( Color( 0.8, 0.6, 0.2 ) )
 	ig.add_vertex( Vector3( l, 0, u ) )
@@ -163,8 +161,8 @@ func getTiles( cx, cy, w, h ):
 	var tiles = Array()
 	var w2 = w / 2
 	var h2 = h / 2
-	var tl = floor( ( cx - w2 ) / quad_extent )
-	var tr = floor( ( cx + w2 ) / quad_extent )
+	var tl = floor( ( cx - w2 ) / quad_extent + width / 2 )
+	var tr = floor( ( cx + w2 ) / quad_extent + width / 2 )
 	var tu = floor( ( cy + h2 ) / quad_extent )
 	var tb = floor( ( cy - h2 ) / quad_extent )
 	print("tl")
@@ -182,7 +180,7 @@ func getTiles( cx, cy, w, h ):
 	return tiles
 
 func increaseAccel():
-	setSpeed( base_speed + increase_speed_rate )
+	#setSpeed( base_speed + increase_speed_rate )
 	pass
 
 func decreaseAccel():
@@ -203,11 +201,12 @@ func _process( delta ):
 	renderQuads( delta, 0, line_color )
 	renderQuads( delta, 1, horizon_color )
 	draw_player_area()
-	if Input.is_action_pressed("ui_up"):
-		base_speed += 0.1
-	elif Input.is_action_pressed("ui_down"):
-		base_speed -= 0.1
-	pass
+	
+	if manual_speed:
+		if Input.is_action_pressed("ui_up"):
+			base_speed += 0.1
+		elif Input.is_action_pressed("ui_down"):
+			base_speed -= 0.1
 
 func row_down():
 	map.drop_last_row()
