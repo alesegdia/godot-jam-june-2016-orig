@@ -155,7 +155,10 @@ func getTile( x, z ):
 	if tz < 0 || tz >= width:
 		tz = -1
 	var tile = Vector2( floor(tx), floor(tz) )
-	return map.get( tile.x, tile.y )
+	var tile_val = -1
+	if tile.x >= 0 && tile.y >= 0 && tile.x < width && tile.y < height:
+		tile_val = map.get( tile.x, tile.y )
+	return tile_val
 
 func getTiles( cx, cy, w, h ):
 	var tiles = Array()
@@ -167,8 +170,9 @@ func getTiles( cx, cy, w, h ):
 	var tb = floor( ( cy - h2 ) / quad_extent )
 	for x in range( tl, tr + 1, 1 ):
 		for y in range( tb, tu + 1, 1 ):
-			var tile = map.get( x + 1, y )
-			tiles.append( tile )
+			if x >= 0 && x < width && y >= 0 && y < height:
+				var tile = map.get( x, y )
+				tiles.append( tile )
 	return tiles
 
 func increaseAccel():
