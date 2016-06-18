@@ -1,5 +1,5 @@
 
-extends Control
+extends Reference
 
 var width
 var next_row
