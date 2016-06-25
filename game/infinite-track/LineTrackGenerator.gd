@@ -2,8 +2,8 @@ extends "SamplerTrackGenerator.gd"
 
 var slope
 
-func _init(pslope, zoffset, width).(zoffset, width):
-	slope = pslope
+func _init(slope, zoffset, width).(zoffset, width):
+	self.slope = slope
 
 func f(z):
-	return z * 1 / slope
+	return z * 1 / self.slope

@@ -29,7 +29,9 @@ export var base_speed = 1.0
 
 func _ready():
 #	row_generator = load("res://infinite-track/RandomTrackGenerator.gd").new( width )
-	row_generator = load("res://infinite-track/LineTrackGenerator.gd").new( 10.0, 0.5, width )
+#	row_generator = load("res://infinite-track/LineTrackGenerator.gd").new( 10.0, 0.5, width )
+	row_generator = load("res://infinite-track/SineTrackGenerator.gd").new( 1.5, 0.2, 0.5, width )
+
 	ig = get_node("ImmediateGeometry")
 	gen_row()
 	set_process(true)
