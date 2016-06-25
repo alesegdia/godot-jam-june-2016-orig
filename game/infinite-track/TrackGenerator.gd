@@ -11,5 +11,10 @@ func _init( pwidth ):
 func _ready():
 	pass
 
+func regen_next_row():
+	next_row = Array()
+	for i in range(0, width):
+		next_row.push_back(0)
+
 func gen_next_row():
 	pass
