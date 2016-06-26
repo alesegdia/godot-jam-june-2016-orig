@@ -12,6 +12,8 @@ onready var distance_counter = counters_gui.get_node("DistanceCounter")
 onready var speed_counter = counters_gui.get_node("SpeedCounter")
 onready var countdown_counter = counters_gui.get_node("CountdownCounter")
 onready var race_director = get_node("RaceDirector")
+onready var hiscore_lbl = startgame.get_node("HiScoreLabel")
+onready var currentscore_lbl = startgame.get_node("CurrentScoreLabel")
 
 export var multi_tile_check = true
 export var countdown_timer_value = 60.0
@@ -95,6 +97,9 @@ func _process(delta):
 	if race_running and countdown <= 0:
 		stop_game()
 
+var hiscore = 0
+var currentscore = 0
+
 func start_game():
 	race_running = true
 	player.can_move = true
@@ -115,4 +120,9 @@ func stop_game():
 	infiniteTrack.running = false
 	counters_gui.hide()
 	startgame.show()
+	currentscore = infiniteTrack.distance
+	if currentscore > hiscore:
+		hiscore = currentscore
+	currentscore_lbl.set_text(str(currentscore))
+	hiscore_lbl.set_text(str(hiscore))
 	
