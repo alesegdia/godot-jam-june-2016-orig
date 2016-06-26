@@ -7,6 +7,7 @@ onready var player = get_node("Player")
 onready var distance_counter = get_node("DistanceCounter")
 onready var speed_counter = get_node("SpeedCounter")
 onready var countdown_counter = get_node("CountdownCounter")
+onready var race_director = get_node("RaceDirector")
 
 export var multi_tile_check = true
 
@@ -14,6 +15,23 @@ var countdown = 60.0
 
 func _ready():
 	set_process(true)
+	race_director.add_generator(load("res://infinite-track/SineTrackGenerator.gd").new( 4, 0.1, 0.5, infiniteTrack.width ), 10.0)
+	race_director.add_generator(load("res://infinite-track/AllTrackGenerator.gd").new( infiniteTrack.width ), 2.0)
+	
+	race_director.add_generator(load("res://infinite-track/LineTrackGenerator.gd").new( 5.0, 0.5, infiniteTrack.width ), 10.0)
+	race_director.add_generator(load("res://infinite-track/AllTrackGenerator.gd").new( infiniteTrack.width ), 2.0)
+	
+	race_director.add_generator(load("res://infinite-track/LineTrackGenerator.gd").new( 10.0, 0.5, infiniteTrack.width ), 10.0)
+	race_director.add_generator(load("res://infinite-track/AllTrackGenerator.gd").new( infiniteTrack.width ), 2.0)
+	
+	race_director.add_generator(load("res://infinite-track/SineTrackGenerator.gd").new( 2, 0.1, 0.5, infiniteTrack.width ), 10.0)
+	race_director.add_generator(load("res://infinite-track/AllTrackGenerator.gd").new( infiniteTrack.width ), 2.0)
+	
+	race_director.add_generator(load("res://infinite-track/LineTrackGenerator.gd").new( 10.0, 0.5, infiniteTrack.width ), 10.0)
+	race_director.add_generator(load("res://infinite-track/AllTrackGenerator.gd").new( infiniteTrack.width ), 2.0)
+	
+	race_director.set_track(infiniteTrack)
+	infiniteTrack.set_generator(race_director.get_generator())
 	pass
 
 var prev_fov = 0

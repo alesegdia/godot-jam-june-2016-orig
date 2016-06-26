@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=1]
+[gd_scene load_steps=12 format=1]
 
 [ext_resource path="res://game/game.gd" type="Script" id=1]
 [ext_resource path="res://infinite-track/infinite-track.tscn" type="PackedScene" id=2]
 [ext_resource path="res://player/player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://RaceDirector.gd" type="Script" id=4]
 
 [sub_resource type="LargeTexture" id=1]
 
@@ -136,6 +137,11 @@ ship_height = 1.0
 
 transform/local = Transform( 0.25, 0, 0, -0, 0.25, 0, 0, -0, 0.25, 0, 0.4, 6 )
 rear_speed = 0.085
+
+[node name="RaceDirector" type="Spatial" parent="."]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+script/script = ExtResource( 4 )
 
 [node name="Aesthetics" type="Spatial" parent="."]
 

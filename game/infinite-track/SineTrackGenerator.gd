@@ -11,3 +11,6 @@ func _init(amp, angle_factor, zoffset, width).(zoffset, width):
 
 func f(z):
 	return self.amp * sin(z * self.angle_factor) + 5
+
+func row_completed(z):
+	pass

@@ -27,6 +27,9 @@ export var manual_speed = false
 
 export var base_speed = 1.0
 
+func set_generator(generator):
+	self.row_generator = generator
+
 func _ready():
 #	row_generator = load("res://infinite-track/RandomTrackGenerator.gd").new( width )
 	row_generator = load("res://infinite-track/LineTrackGenerator.gd").new( 20.0, 0.5, width )
