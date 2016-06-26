@@ -70,10 +70,20 @@ func detectPlayerTile():
 			elif tiles[t] == 0:
 				infiniteTrack.decreaseAccel()
 	else:
-		if tile == 0:
+		var tiles = infiniteTrack.getTiles( px, pz, 0.5, 0.5 )
+		var did_find = false
+		for t in range(tiles.size()):
+			if tiles[t] == 1:
+				did_find = true
+				infiniteTrack.increaseAccel()
+				break
+		if not did_find:
 			infiniteTrack.decreaseAccel()
-		elif tile == 1:
-			infiniteTrack.increaseAccel()
+		## Accumulative
+		#if tile == 0:
+		#	infiniteTrack.decreaseAccel()
+		#elif tile == 1:
+		#	infiniteTrack.increaseAccel()
 
 var race_running = false
 

@@ -102,7 +102,7 @@ lossy_quality = 0.7
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 script/script = ExtResource( 1 )
-multi_tile_check = true
+multi_tile_check = false
 countdown_timer_value = 60.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -130,14 +130,13 @@ v_offset = 0.0
 quad_extent = 1.0
 line_color = Color( 0.858824, 0, 0.431373, 1 )
 horizon_color = Color( 0, 1, 1, 1 )
-increase_speed_rate = 0.04
-decrease_speed_rate = 0.07
+increase_speed_rate = 0.03
 ship_width = 0.5
 ship_height = 1.0
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 
-transform/local = Transform( 0.25, 0, 0, -0, 0.25, 0, 0, -0, 0.25, 0, 0.4, 6 )
+transform/local = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0.4, 6 )
 rear_speed = 0.085
 can_move = false
 
