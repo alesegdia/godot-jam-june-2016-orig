@@ -4,7 +4,13 @@ extends Spatial
 onready var cam = get_node("Camera")
 onready var infiniteTrack = get_node("InfiniteTrack")
 onready var player = get_node("Player")
+onready var distance_counter = get_node("DistanceCounter")
+onready var speed_counter = get_node("SpeedCounter")
+onready var countdown_counter = get_node("CountdownCounter")
+
 export var multi_tile_check = true
+
+var countdown = 60.0
 
 func _ready():
 	set_process(true)
@@ -45,6 +51,12 @@ func detectPlayerTile():
 
 
 func _process(delta):
+	distance_counter.set_text(str(infiniteTrack.distance))
+	speed_counter.set_text(str(floor(infiniteTrack.base_speed * 10)))
+	
+	countdown -= delta
+	countdown_counter.set_text(str(floor(countdown)))
+	
 	handleFov()
 	detectPlayerTile()
 	var px = player.get_transform().origin.x
