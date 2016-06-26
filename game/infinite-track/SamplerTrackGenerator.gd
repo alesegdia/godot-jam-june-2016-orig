@@ -23,9 +23,13 @@ func sample(z0, z1, resolution):
 func advance(quantity, resolution):
 	sample(z_current, z_current + quantity, resolution)
 	z_current = z_current + quantity
+	
 	pass
 
 func gen_next_row():
 	regen_next_row()
 	advance(1.0, 100.0)
+	row_completed(self.z_current)
 
+func row_completed():
+	pass
