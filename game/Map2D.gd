@@ -23,3 +23,8 @@ func drop_last_row():
 
 func push_row( row ):
 	map.insert( 0, row )
+
+func fill(value):
+	for x in range(width):
+		for y in range(height):
+			set( x, y, value )

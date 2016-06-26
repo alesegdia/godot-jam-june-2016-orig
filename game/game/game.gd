@@ -1,20 +1,26 @@
 
 extends Spatial
 
+var Map2D = load("Map2D.gd")
+
+onready var startgame = get_node("StartGame")
+onready var counters_gui = get_node("CountersGUI")
 onready var cam = get_node("Camera")
 onready var infiniteTrack = get_node("InfiniteTrack")
 onready var player = get_node("Player")
-onready var distance_counter = get_node("DistanceCounter")
-onready var speed_counter = get_node("SpeedCounter")
-onready var countdown_counter = get_node("CountdownCounter")
+onready var distance_counter = counters_gui.get_node("DistanceCounter")
+onready var speed_counter = counters_gui.get_node("SpeedCounter")
+onready var countdown_counter = counters_gui.get_node("CountdownCounter")
 onready var race_director = get_node("RaceDirector")
 
 export var multi_tile_check = true
+export var countdown_timer_value = 60.0
 
-var countdown = 60.0
+var countdown = countdown_timer_value
 
 func _ready():
 	set_process(true)
+	set_process_input(true)
 	race_director.add_generator(load("res://infinite-track/SineTrackGenerator.gd").new( 4, 0.1, 0.5, infiniteTrack.width ), 10.0)
 	race_director.add_generator(load("res://infinite-track/AllTrackGenerator.gd").new( infiniteTrack.width ), 2.0)
 	
@@ -67,6 +73,7 @@ func detectPlayerTile():
 		elif tile == 1:
 			infiniteTrack.increaseAccel()
 
+var race_running = false
 
 func _process(delta):
 	distance_counter.set_text(str(infiniteTrack.distance))
@@ -76,8 +83,34 @@ func _process(delta):
 	countdown_counter.set_text(str(floor(countdown)))
 	
 	handleFov()
-	detectPlayerTile()
+	if race_running:
+		detectPlayerTile()
 	var px = player.get_transform().origin.x
 	var pz = player.get_transform().origin.z
 	infiniteTrack.set_player_area( px, pz )
-	pass
+	
+	if not race_running and Input.is_action_pressed("ui_accept"):
+		start_game()
+	
+	if race_running and countdown <= 0:
+		stop_game()
+
+func start_game():
+	print("here")
+	race_running = true
+	player.can_move = true
+	counters_gui.show()
+	startgame.hide()
+	countdown = countdown_timer_value
+	infiniteTrack.running = true
+	infiniteTrack.distance = 0
+	infiniteTrack.base_speed = 4.2
+	infiniteTrack.clear()
+
+func stop_game():
+	race_running = false
+	player.can_move = false
+	infiniteTrack.running = false
+	counters_gui.hide()
+	startgame.show()
+	

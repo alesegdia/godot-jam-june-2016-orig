@@ -195,13 +195,15 @@ func setSpeed( new_speed ):
 	pass
 
 var distance = 0
+var running = false
 
 func _process( delta ):
-	timer += delta
-	while timer * base_speed > quad_extent:
-		timer -= quad_extent / base_speed
-		distance += 1
-		row_down()
+	if running:
+		timer += delta
+		while timer * base_speed > quad_extent:
+			timer -= quad_extent / base_speed
+			distance += 1
+			row_down()
 	ig.clear()
 	renderQuads( delta, 0, line_color )
 	renderQuads( delta, 1, horizon_color )
@@ -217,3 +219,6 @@ func row_down():
 	map.drop_last_row()
 	map.push_row( next_row )
 	gen_row()
+
+func clear():
+	map.fill(0)

@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=1]
+[gd_scene load_steps=13 format=1]
 
 [ext_resource path="res://game/game.gd" type="Script" id=1]
 [ext_resource path="res://infinite-track/infinite-track.tscn" type="PackedScene" id=2]
 [ext_resource path="res://player/player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://RaceDirector.gd" type="Script" id=4]
+[ext_resource path="res://StartGame.gd" type="Script" id=5]
 
 [sub_resource type="LargeTexture" id=1]
 
@@ -102,6 +103,7 @@ lossy_quality = 0.7
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 script/script = ExtResource( 1 )
 multi_tile_check = true
+countdown_timer_value = 60.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 
@@ -137,6 +139,7 @@ ship_height = 1.0
 
 transform/local = Transform( 0.25, 0, 0, -0, 0.25, 0, 0, -0, 0.25, 0, 0.4, 6 )
 rear_speed = 0.085
+can_move = false
 
 [node name="RaceDirector" type="Spatial" parent="."]
 
@@ -249,7 +252,16 @@ params/attenuation = 0.277392
 params/spot_angle = 14.6865
 params/spot_attenuation = 1.0
 
-[node name="DistanceCounter" type="Label" parent="."]
+[node name="CountersGUI" type="Control" parent="."]
+
+margin/right = 40.0
+margin/bottom = 40.0
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+
+[node name="DistanceCounter" type="Label" parent="CountersGUI"]
 
 margin/left = 123.0
 margin/top = 73.0
@@ -266,7 +278,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="SpeedCounter" type="Label" parent="."]
+[node name="SpeedCounter" type="Label" parent="CountersGUI"]
 
 margin/left = 746.0
 margin/top = 76.0
@@ -283,7 +295,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="CountdownCounter" type="Label" parent="."]
+[node name="CountdownCounter" type="Label" parent="CountersGUI"]
 
 margin/left = 348.0
 margin/top = 66.0
@@ -301,7 +313,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="CountdownIcon" type="TextureFrame" parent="."]
+[node name="CountdownIcon" type="TextureFrame" parent="CountersGUI"]
 
 margin/left = 488.0
 margin/top = 16.0
@@ -315,7 +327,7 @@ size_flags/vertical = 2
 texture = SubResource( 5 )
 modulate = Color( 1, 0.914062, 0, 1 )
 
-[node name="SpeedIcon" type="TextureFrame" parent="."]
+[node name="SpeedIcon" type="TextureFrame" parent="CountersGUI"]
 
 margin/left = 804.0
 margin/top = 23.0
@@ -329,7 +341,7 @@ size_flags/vertical = 2
 texture = SubResource( 6 )
 modulate = Color( 0, 0.859375, 1, 1 )
 
-[node name="DistanceIcon" type="TextureFrame" parent="."]
+[node name="DistanceIcon" type="TextureFrame" parent="CountersGUI"]
 
 margin/left = 187.0
 margin/top = 21.0
@@ -342,5 +354,53 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 texture = SubResource( 7 )
 modulate = Color( 1, 0, 0.960938, 1 )
+
+[node name="StartGame" type="Control" parent="."]
+
+margin/left = 483.0
+margin/top = 246.0
+margin/right = 523.0
+margin/bottom = 286.0
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+script/script = ExtResource( 5 )
+blink_timer = 1.0
+
+[node name="SpaceToStart" type="Label" parent="StartGame"]
+
+margin/left = -161.0
+margin/top = -208.0
+margin/right = -57.0
+margin/bottom = -195.0
+rect/scale = Vector2( 4, 4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+custom_colors/font_color = Color( 0, 1, 0.976562, 1 )
+custom_colors/font_color_shadow = Color( 0.972656, 0, 0, 1 )
+text = "SPACE TO START"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="RazorX" type="Label" parent="StartGame"]
+
+margin/left = -276.0
+margin/top = -223.0
+margin/right = -170.0
+margin/bottom = -210.0
+rect/scale = Vector2( 6, 6 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+custom_colors/font_color = Color( 0, 1, 0.976562, 1 )
+custom_colors/font_color_shadow = Color( 0.972656, 0, 0, 1 )
+text = "RAZOR X"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 
