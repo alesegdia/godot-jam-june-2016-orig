@@ -96,7 +96,6 @@ func _process(delta):
 		stop_game()
 
 func start_game():
-	print("here")
 	race_running = true
 	player.can_move = true
 	counters_gui.show()
@@ -106,6 +105,9 @@ func start_game():
 	infiniteTrack.distance = 0
 	infiniteTrack.base_speed = 4.2
 	infiniteTrack.clear()
+	var xform = player.get_transform()
+	xform.origin.x = 0
+	player.set_transform(xform)
 
 func stop_game():
 	race_running = false
